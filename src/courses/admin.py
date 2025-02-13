@@ -7,7 +7,7 @@ from cloudinary import CloudinaryImage
 # Register your models here.
 class LessonInline(admin.StackedInline):
     model = Lesson
-    readonly_fields = ["public_id","update_date",'display_image',"display_video"]
+    readonly_fields = ["public_id","updated",'display_image',"display_video"]
     extra = 0
 
 
@@ -40,7 +40,7 @@ class CourseAdmin(admin.ModelAdmin):
     inlines = [LessonInline]
     list_display = ["title","status","access"]
     list_filter = ["status","access"]
-    fields = ["public_id","title","discription","status","image","access","display_image"]
+    fields = ["public_id","title","description","status","image","access","display_image"]
     readonly_fields = ["public_id","display_image"]
 
     def display_image(self,obj,*args,**kwargs):

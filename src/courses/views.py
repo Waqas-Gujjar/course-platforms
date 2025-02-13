@@ -7,10 +7,10 @@ def course_list_view(request):
     queryset = services.get_published_courses()
     print(queryset)
     context ={
-        'objects': queryset,
+        'object': queryset,
     }
-    return JsonResponse({"data": [x.path for x in queryset]})
-    # return render(request, 'courses/course.html',context)
+    # return JsonResponse({"data": [x.path for x in queryset]})
+    return render(request, 'courses/courses.html',context)
 
 
 
