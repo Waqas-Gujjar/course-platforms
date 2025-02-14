@@ -7,7 +7,7 @@ def course_list_view(request):
     queryset = services.get_published_courses()
     print(queryset)
     context ={
-        'object': queryset
+        'object': queryset,
     }
     # return JsonResponse({"data": [x.path for x in queryset]})
     return render(request, 'courses/course_list.html',context)
@@ -19,8 +19,12 @@ def course_detail_view(request,course_id=None,*args, **kwargs):
     if course_obj is None:
         raise Http404
     lesson_queryset = course_obj.lesson_set.all()
-    return JsonResponse({"data": course_obj.id , "lessons": [x.path for x in lesson_queryset]  })
-    # return render(request, 'cource/detail.html')
+    context ={
+        'object_list': course_obj,
+        'lesson_queryset': lesson_queryset,  # passing queryset to template for rendering
+    }
+    # return JsonResponse({"data": course_obj.id , "lessons": [x.path for x in lesson_queryset]  })
+    return render(request, 'courses/detail.html',context)
 
 
 

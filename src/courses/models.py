@@ -196,37 +196,4 @@ class Lesson(models.Model):
             course_path = course_path[:-1]
         return f"{course_path}/lessons/{self.public_id}"
 
-    @property
-    def requires_email(self):
-        return self.course.access == AccessRequirement.EMAIL_REQUIRED
-
-    def get_display_name(self):
-        return f"{self.title} - {self.course.get_display_name()}"
-
-    @property
-    def is_coming_soon(self):
-        return self.status == PublishStatus.COMING_SOON
-    
-    @property
-    def has_video(self):
-        return self.video is not None
-    
-    def get_thumbnail(self):
-        width = 382
-        if self.thumbnail:
-            return helpers.get_cloudinary_image_object(
-                self, 
-                field_name='thumbnail',
-                format='jpg',
-                as_html=False,
-                width=width
-            )
-        elif self.video:
-            return helpers.get_cloudinary_image_object(
-            self, 
-            field_name='video',
-            format='jpg',
-            as_html=False,
-            width=width
-        )
-        return 
+   

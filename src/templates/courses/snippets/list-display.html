@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{ object_list.title }}
+
+<ul class='list-disc '>
+    {% for my_obj in queryset  %}
+    <li>
+        <a class="text-blue-700" href={{ my_obj.get_absolute_url }}>{{ my_obj.title }}</a>
+    </li>
+    {% endfor %}
+</ul>
+{% endblock content %}

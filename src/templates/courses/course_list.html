@@ -1,16 +1,13 @@
-{% extends "base.html" %}
-
-{% block content %}
 
 
 
-<ul>
-    {% for obj in object  %}
-    {{ obj.title }}
-    <li>
-        <a href={{obj.get_absolute_url}}>{{obj.title}}</a>
-    </li>
-</ul>
-{% endfor %}
+
+{% block content %} 
+<h1>
+    Courses
+</h1>
+{% include "courses/snippets/list-display.html" with queryset=object %}
+
+
 
 {% endblock content %}
