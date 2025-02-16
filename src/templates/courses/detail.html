@@ -1,7 +1,6 @@
+{% extends "base.html" %}
 
-
-{% block content %} 
-{% include "courses/snippets/list-display.html" with queryset=lesson_queryset %}
-
-
+{% block content %}
+  <!-- Include the list-display snippet and pass the lesson_queryset -->
+  {% include "courses/snippets/list-display.html" with queryset=lesson_queryset %}
 {% endblock content %}

@@ -1,13 +1,8 @@
+{% extends "base.html" %}
 
-
-
-
-{% block content %} 
-<h1>
-    Courses
-</h1>
-{% include "courses/snippets/list-display.html" with queryset=object %}
-
-
-
+{% block content %}
+  <h1 class="text-2xl font-bold mb-4">Courses</h1>  <!-- Added styling for the heading -->
+  
+  <!-- Include the list-display snippet and pass the queryset -->
+  {% include "courses/snippets/list-display.html" with queryset=obj_list %}
 {% endblock content %}

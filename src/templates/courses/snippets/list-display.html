@@ -1,13 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-{{ object_list.title }}
+{{ object.title }}
 
-<ul class='list-disc '>
-    {% for my_obj in queryset  %}
+<ul class='list-disc'></ul>
+    {% for object in queryset  %}
     <li>
-        <a class="text-blue-700" href={{ my_obj.get_absolute_url }}>{{ my_obj.title }}</a>
+        <a class=" text-blue-700 " href={{ object.get_absolute_url }}>{{ object.title }}</a>   
     </li>
     {% endfor %}
 </ul>
-{% endblock content %}
+<ul class='list-disc'></ul>
+    {% for object in queryset  %}
+    <li>
+        <a class=" text-blue-700 " href={{ object.is_coming_soon }}>{{ object.status   }}</a>   
+    </li>
+    {% endfor %}
+</ul>
+
+  {% endblock content %}
