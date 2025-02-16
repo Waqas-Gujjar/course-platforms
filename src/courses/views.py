@@ -1,53 +1,64 @@
-from django.shortcuts import render, get_object_or_404
+import helpers
 from django.http import Http404, JsonResponse
+from django.shortcuts import render, redirect
+
 from . import services
 
-# Course List View
 def course_list_view(request):
-    """
-    Renders a list of all published courses.
-    """
-    queryset = services.get_published_courses()
+    queryset = services.get_publish_courses()
     context = {
-        'obj_list': queryset,
+        "object_list": queryset
     }
-    return render(request, 'courses/course_list.html', context)
+    template_name = "courses/course_list.html"
+    if request.htmx:
+        template_name = "courses/snippets/list-display.html"
+        context['queryset'] = queryset[:3]
+    return render(request, template_name, context)
 
 
-# Course Detail View
-def course_detail_view(request, course_id=None, *args, **kwargs):
-    """
-    Renders the details of a specific course and its associated lessons.
-    Raises Http404 if the course does not exist or is not published.
-    """
+def course_detail_view(request, course_id=None, *args, **kwarg):
     course_obj = services.get_course_detail(course_id=course_id)
     if course_obj is None:
-        raise Http404("Course not found or not published.")
-    
-    lesson_queryset = services.get_courses_lessons(course_obj)
+        raise Http404
+    lessons_queryset = services.get_course_lessons(course_obj)
     context = {
-        'object': course_obj,  # Use 'object' instead of 'objects' for consistency
-        'lesson_queryset': lesson_queryset,
+        "object": course_obj,
+        "lessons_queryset": lessons_queryset,
     }
-    return render(request, 'courses/detail.html', context)
+    # return JsonResponse({"data": course_obj.id, 'lesson_ids': [x.path for x in lessons_queryset] })
+    return render(request, "courses/detail.html", context)
 
 
-# Lesson Detail View
 def lesson_detail_view(request, course_id=None, lesson_id=None, *args, **kwargs):
-    """
-    Returns JSON data for a specific lesson if it exists and is published or coming soon.
-    Raises Http404 if the lesson does not exist or is not accessible.
-    """
-    lesson_obj = services.get_lesson_detail(course_id=course_id, lesson_id=lesson_id)
+    print(course_id, lesson_id)
+    lesson_obj = services.get_lesson_detail(
+        course_id=course_id,
+        lesson_id=lesson_id
+    )
     if lesson_obj is None:
-        raise Http404("Lesson not found or not accessible.")
-    
-    # Return JSON response with lesson details
-    return JsonResponse({
-        "data": {
-            "lesson_id": lesson_obj.id,
-            "course_id": course_id,
-            "title": lesson_obj.title,
-            "status": lesson_obj.status,
-        }
-    })
+        raise Http404
+    email_id_exists = request.session.get('email_id')
+    if lesson_obj.requires_email and not email_id_exists:
+        print(request.path)
+        request.session['next_url'] = request.path
+        return render(request, "courses/email-required.html", {})
+    # template_name = "courses/purchase-required.html"
+    template_name = "courses/lesson-coming-soon.html"
+    context = {
+        "object": lesson_obj
+    }
+    if not lesson_obj.is_coming_soon and lesson_obj.has_video:
+        """
+        Lesson is published
+        Video is available
+        go forward
+        """
+        template_name = "courses/lesson.html"
+        video_embed_html = helpers.get_cloudinary_video_object(
+            lesson_obj, 
+            field_name='video',
+            as_html=True,
+            width=1250
+        )
+        context['video_embed'] = video_embed_html
+    return render(request, template_name, context)
