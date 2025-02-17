@@ -70,7 +70,7 @@ INSTALLED_APPS = [
     "emails",
     "django_htmx",
     "tailwind",
-    # "theme", # django-tailwind theme app
+    "theme", # django-tailwind theme app
 
 ]
 
@@ -96,8 +96,8 @@ ROOT_URLCONF = 'core.urls'
 
 TAILWIND_APP_NAME="theme" # django-tailwind theme app
 INTERNAL_IPS = [
-    "0.0.0.0",
-    "127.0.0.1",
+   
+    "172.17.0.1 ",
 ]
 
 TEMPLATES = [

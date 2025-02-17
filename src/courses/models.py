@@ -112,7 +112,7 @@ class Course(models.Model):
             as_html=False,
             width=382
         )
-
+    @property
     def get_display_image(self):
         if not self.image:
             return None
