@@ -15,10 +15,10 @@ from decouple import config
 
 BASE_URL = config("BASE_URL", default='http://127.0.0.1:8000')
 # default backend
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config("EMAIL_HOST", cast=str, default=None)
 EMAIL_PORT = config("EMAIL_PORT", cast=str, default='587') # Recommended
-EMAIL_ADDRESS = "hungrypy@gmail.com"
+EMAIL_ADDRESS = "courseplatefprm@gmail.com"
 EMAIL_HOST_USER = config("EMAIL_HOST_USER", cast=str, default=None)
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD", cast=str, default=None)
 EMAIL_USE_TLS = config("EMAIL_USE_TLS", cast=bool, default=True)  # Use EMAIL_PORT 587 for TLS
@@ -66,11 +66,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "courses",
-    "emails",
+#    third party app
     "django_htmx",
     "tailwind",
     "theme", # django-tailwind theme app
+    
+    #  internal app
+    "courses",
+    "emails",
 
 ]
 

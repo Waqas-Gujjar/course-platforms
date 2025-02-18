@@ -38,6 +38,7 @@ def email_token_login_view(request):
     if form.is_valid():
         email_val = form.cleaned_data.get('email')
         obj = services.start_verification_event(email_val)
+        print(obj)
         context['form'] = EmailForm()
         context['message'] = f"Succcess! Check your email for verification from {EMAIL_ADDRESS}"
         # return HttpResponseClientRedirect('/check-your-email')
